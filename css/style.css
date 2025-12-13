@@ -179,11 +179,13 @@ button {
 }
 
 .alphabet button {
-  border: 1px solid #ccc;
-  background: #fff;
-  padding: 4px 8px;
-  cursor: pointer;
-  font-size: 0.9rem;
+    color: black;
+    font-family: "tahoma";
+    border: 1px solid #ccc;
+    background: #fff;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
 }
 
 .alphabet button:hover {
