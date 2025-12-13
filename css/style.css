@@ -19,6 +19,7 @@ body{
 
 main{
   background-color: white;
+  border-radius: 30px;
   display: flex;
   width: 75%;
   flex-direction: column;
@@ -41,38 +42,48 @@ img{
   align-items: center;
   flex-direction: column;
   max-width: 75%;
+  padding-bottom: 40px;
 }
 
 /******************************************
 /* TYPOGRAPHY
 /*******************************************/
 
-html{
+body{
   font-size: 62.5%;
 }
-body{
-  font-family:'Tahoma', 'Verdana', 'Times New Roman';
+
+main{
+  font-family:'Times New Roman';
   font-size: 1.5rem;
 }
+
 h1{
   font-size: 3.5rem;
 }
+
 .search-area {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
+
 .instructions{
   text-align: center;
 }
+
 .cocktailMethod{
   font-size: 2rem;
 }
+
 .ingredients, .instructions{
   font-size: 1.5rem;
 }
 
+.typeIt{
+  font-size: 1rem;
+}
 
 /******************************************
 /* IMAGES
@@ -92,7 +103,7 @@ h1{
 
 .drink {
   position: absolute;
-  top: 33%; /* adjust so it fits inside your transparent window */
+  top: 31%; /* adjust so it fits inside your transparent window */
   left: 31%;
   width: 38%; /* so it fits inside the window without stretching */
   height: auto;
@@ -147,4 +158,5 @@ button {
 }
 .typeIt {
   width: 300px;
+  padding: 10px;
 }
