@@ -45,9 +45,8 @@ img{
   padding-bottom: 40px;
 }
 
-.button-container{
+.search-name-container, .search-ing-container{
   display: flex;
-  flex-direction: row;
 }
 
 /******************************************
@@ -67,11 +66,18 @@ h1{
   font-size: 3.5rem;
 }
 
-.search-area {
+.search-buttons-container {
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 12px;
   margin-bottom: 10px;
+}
+
+.master-buttons-container{
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .instructions{
@@ -95,7 +101,7 @@ h1{
 /*******************************************/
 
 .shaker {
-  width: 100px;
+  width: 140px;
   object-fit: contain;
   transition: transform 0.2s ease;
 }
@@ -160,10 +166,6 @@ h1{
 
 button {
   padding: 5px 10px;
-}
-
-#shake-btn{
-  margin-right: 30px;
 }
 
 .typeIt {

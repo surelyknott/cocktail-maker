@@ -6,8 +6,16 @@ const letterResultsDropdown = document.querySelector('.letter-results-dropdown')
 let currentLetterDrinks = []; // drinks for the selected letter
 const shakers = document.querySelectorAll('.shaker');
 const searchInput = document.querySelector('input');
+const ingredientInput = document.querySelector('#ingredient-input');
 const shakeBtn = document.querySelector('#shake-btn');
 const surpriseBtn = document.querySelector('#surprise-btn');
+const ingredientBtn = document.querySelector('#ingredient-btn');  
+
+function fetchDrinkById(id) {
+  return fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`)
+    .then(res => res.json())
+    .then(data => data.drinks[0]);
+}
 
 // --- RENDER A SINGLE DRINK INTO THE TIKI BAR ---
 function renderDrink(drink) {
@@ -53,10 +61,18 @@ for (let code = 65; code <= 90; code++) {  // 65 = 'A', 90 = 'Z'
 // --- MAIN "SHAKE" BUTTON / INPUT LOGIC ---
 document.querySelector('#shake-btn').addEventListener('click', getDrink);
 document.querySelector('#surprise-btn').addEventListener('click', getRandomDrink);
+document.querySelector('#ingredient-btn').addEventListener('click', getDrinkByIngredient);
+
 
 searchInput.addEventListener('keydown', e => {
   if (e.key === 'Enter') {
     getDrink();
+  }
+});
+
+ingredientInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    getDrinkByIngredient();
   }
 });
 
@@ -120,6 +136,50 @@ function getRandomDrink() {
   }, 1500); // match your existing shake duration
 }
 
+function getDrinkByIngredient() {
+  // start shaking animation
+  shakers.forEach(shaker => shaker.classList.add('shake'));
+
+  setTimeout(() => {
+    const ingredient = ingredientInput.value.trim();
+
+    if (!ingredient) {
+      shakers.forEach(shaker => shaker.classList.remove('shake'));
+      return;
+    }
+
+    // search by ingredient
+    fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${ingredient}`)
+      .then(res => res.json())
+      .then(async data => {
+        const drinks = data.drinks;
+
+        if (!drinks || drinks.length === 0) {
+          document.querySelector('h2').innerText = 'No cocktails found';
+          document.querySelector('#drink-img').src = '';
+          document.querySelector('.ingredient-images').innerHTML = '';
+          document.querySelector('.ingredients').innerHTML = '';
+          document.querySelector('.instructions').innerText = '';
+          return;
+        }
+
+        // pick random from ingredient results
+        const randomIndex = Math.floor(Math.random() * drinks.length);
+        const selected = drinks[randomIndex]; // has idDrink, name, thumb
+
+        // fetch full details
+        const fullDrink = await fetchDrinkById(selected.idDrink);
+
+        renderDrink(fullDrink);
+      })
+      .catch(err => console.log(err))
+      .finally(() => {
+        // stop shaking
+        shakers.forEach(shaker => shaker.classList.remove('shake'));
+      });
+
+  }, 1500);
+}
 
 // --- ALPHABET LIST LOGIC ---
 alphabetContainer.addEventListener('click', e => {
