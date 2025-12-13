@@ -37,12 +37,14 @@ img{
   max-width: 80%;
 } */
 
-.cocktailMethod{
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  max-width: 75%;
-  padding-bottom: 40px;
+.cocktailMethod {
+    display: flex;
+    background-color: #ecd189;
+    border-radius: 40px;
+    align-items: center;
+    flex-direction: column;
+    max-width: 75%;
+    padding: 0 40px 40px 40px;
 }
 
 .search-name-container, .search-ing-container{
@@ -90,6 +92,14 @@ h1{
 
 .ingredients, .instructions{
   font-size: 1.5rem;
+  font-size: 1.5rem;
+  background-color: white;
+  padding: 40px;
+  border-radius: 10px;
+}
+
+.ingredients{
+  padding: 20px 40px 20px 50px;
 }
 
 .typeIt{
