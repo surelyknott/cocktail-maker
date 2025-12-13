@@ -6,6 +6,8 @@ const letterResultsDropdown = document.querySelector('.letter-results-dropdown')
 let currentLetterDrinks = []; // drinks for the selected letter
 const shakers = document.querySelectorAll('.shaker');
 const searchInput = document.querySelector('input');
+const shakeBtn = document.querySelector('#shake-btn');
+const surpriseBtn = document.querySelector('#surprise-btn');
 
 // --- RENDER A SINGLE DRINK INTO THE TIKI BAR ---
 function renderDrink(drink) {
@@ -50,6 +52,7 @@ for (let code = 65; code <= 90; code++) {  // 65 = 'A', 90 = 'Z'
 
 // --- MAIN "SHAKE" BUTTON / INPUT LOGIC ---
 document.querySelector('#shake-btn').addEventListener('click', getDrink);
+document.querySelector('#surprise-btn').addEventListener('click', getRandomDrink);
 
 searchInput.addEventListener('keydown', e => {
   if (e.key === 'Enter') {
@@ -97,6 +100,26 @@ function getDrink() {
 
   }, 1500); // 1.5 seconds of shaking
 }
+
+function getRandomDrink() {
+  // Start shaking animation
+  shakers.forEach(shaker => shaker.classList.add('shake'));
+
+  setTimeout(() => {
+    fetch('https://www.thecocktaildb.com/api/json/v1/1/random.php')
+      .then(res => res.json())
+      .then(data => {
+        const drink = data.drinks[0]; // random.php returns a single drink in an array
+        renderDrink(drink);
+      })
+      .catch(err => console.log(err))
+      .finally(() => {
+        // Stop shaking after fetch completes
+        shakers.forEach(shaker => shaker.classList.remove('shake'));
+      });
+  }, 1500); // match your existing shake duration
+}
+
 
 // --- ALPHABET LIST LOGIC ---
 alphabetContainer.addEventListener('click', e => {

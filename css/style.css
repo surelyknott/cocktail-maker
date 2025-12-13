@@ -45,6 +45,11 @@ img{
   padding-bottom: 40px;
 }
 
+.button-container{
+  display: flex;
+  flex-direction: row;
+}
+
 /******************************************
 /* TYPOGRAPHY
 /*******************************************/
@@ -156,6 +161,11 @@ h1{
 button {
   padding: 5px 10px;
 }
+
+#shake-btn{
+  margin-right: 30px;
+}
+
 .typeIt {
   width: 300px;
   padding: 10px;
