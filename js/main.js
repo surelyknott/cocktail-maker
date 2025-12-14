@@ -10,6 +10,7 @@ const ingredientInput = document.querySelector('#ingredient-input');
 const shakeBtn = document.querySelector('#shake-btn');
 const surpriseBtn = document.querySelector('#surprise-btn');
 const ingredientBtn = document.querySelector('#ingredient-btn');  
+const methodSections = document.querySelectorAll('.cocktailMethod');
 
 function fetchDrinkById(id) {
   return fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`)
@@ -47,6 +48,8 @@ function renderDrink(drink) {
   document.querySelector('.ingredient-images').innerHTML = ingredientImages;
   document.querySelector('.ingredients').innerHTML = ingredientsList;
   document.querySelector('.instructions').innerText = drink.strInstructions;
+    // Show the hidden sections once we have a drink
+  methodSections.forEach(section => section.classList.remove('hidden'));
 }
 
 // --- BUILD A–Z BUTTONS ---
