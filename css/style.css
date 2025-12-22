@@ -150,14 +150,6 @@ h3 {
 }
 
 .tiki-container {
-    /* display: flex; */
-    /* position: relative; */
-    /* width: 500px; */
-    /* height: auto; */
-    /* flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: center;
-    align-content: flex-start; */
     width: 75%; 
     position: relative;
 }
@@ -176,15 +168,14 @@ h3 {
 .tiki-shutter {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    #7a4a1f,
-    #5d3514
-  );
+  background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 0px, rgba(255, 255, 255, 0.06) 2px, transparent 2px, transparent 18px), 
+  linear-gradient(to bottom, #b8a74c 0%, #a75b1c 40%, #452e1c 100%);
   box-shadow: inset 0 -6px 10px rgba(0,0,0,0.35);
   transform: translateY(0); /* CLOSED */
   transition: transform 3.0s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 2;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 
 .drink-window.open .tiki-shutter {
@@ -204,17 +195,6 @@ h3 {
   width: 100%;
   z-index: 3;
 }
-
-
-
-/* .tiki-frame {
-  position: relative;
-  width: 500px;
-  border-radius: 10%;
-  height: auto;
-  z-index: 2;
-  margin-bottom: 30px;
-} */
 
 .ingredient-images {
   display: flex;
