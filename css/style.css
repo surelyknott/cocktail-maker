@@ -55,6 +55,10 @@ img{
   display: flex;
 }
 
+.surprise-container {
+  margin-bottom: 30px;
+}
+
 /******************************************
 /* TYPOGRAPHY
 /*******************************************/
@@ -146,21 +150,62 @@ h3 {
 }
 
 .tiki-container {
-    display: flex;
+    /* display: flex; */
     /* position: relative; */
     /* width: 500px; */
     /* height: auto; */
-    flex-direction: row;
+    /* flex-direction: row;
     flex-wrap: nowrap;
     align-items: center;
-    align-content: flex-start;
+    align-content: flex-start; */
+    width: 75%; 
+    position: relative;
+}
+
+/* This MUST line up with the transparent hole */
+.drink-window {
+  position: absolute;
+  top: 22%;        /* reuse your existing values */
+  left: 22%;
+  width: 56%;
+  height: 50%;     /* adjust to match cut-out height */
+  overflow: hidden;
+  z-index: 1;
+}
+
+.tiki-shutter {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    #7a4a1f,
+    #5d3514
+  );
+  box-shadow: inset 0 -6px 10px rgba(0,0,0,0.35);
+  transform: translateY(0); /* CLOSED */
+  transition: transform 3.0s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 2;
+}
+
+.drink-window.open .tiki-shutter {
+  transform: translateY(-100%);
 }
 
 .drink {
-    width: 40%;
-    margin: 40px 40px 0 40px;
-    align-self: start;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 1;
 }
+
+.tiki-frame {
+  margin: 0 auto;
+  position: relative;
+  width: 100%;
+  z-index: 3;
+}
+
+
 
 /* .tiki-frame {
   position: relative;

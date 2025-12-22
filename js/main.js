@@ -9,13 +9,56 @@ const searchInput = document.querySelector('input');
 const ingredientInput = document.querySelector('#ingredient-input');
 const shakeBtn = document.querySelector('#shake-btn');
 const surpriseBtn = document.querySelector('#surprise-btn');
-const ingredientBtn = document.querySelector('#ingredient-btn');  
+const ingredientBtn = document.querySelector('#ingredient-btn');
 const methodSections = document.querySelectorAll('.cocktailMethod');
+const drinkWindow = document.querySelector('.drink-window');
+
+// ✅ CHANGED: grab shutter element once (needed for transitionend)
+const tikiShutter = document.querySelector('.tiki-shutter'); // ✅ CHANGED
+
+// ✅ CHANGED: timing values in one place
+const SHUTTER_PAUSE_MS = 500;  // time to stay closed before opening
+const SHAKER_DELAY_MS = 1500;  // your existing shake delay
 
 function fetchDrinkById(id) {
   return fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`)
     .then(res => res.json())
     .then(data => data.drinks[0]);
+}
+
+function withClosedShutter(swapCallback) {
+
+  const shutterIsOpen = drinkWindow.classList.contains('open');
+
+  // If shutter is open, close it first and wait
+  if (shutterIsOpen) {
+    drinkWindow.classList.remove('open');
+
+    const onClose = (e) => {
+      if (e.target !== tikiShutter || e.propertyName !== 'transform') return;
+
+      tikiShutter.removeEventListener('transitionend', onClose);
+
+      // Safe to swap while fully closed
+      swapCallback();
+
+      // Pause closed, then open
+      setTimeout(() => {
+        drinkWindow.classList.add('open');
+      }, SHUTTER_PAUSE_MS);
+    };
+
+    tikiShutter.addEventListener('transitionend', onClose);
+
+  } else {
+    // Shutter already closed (first load OR rapid clicks)
+    swapCallback();
+
+    // Pause closed, then open
+    setTimeout(() => {
+      drinkWindow.classList.add('open');
+    }, SHUTTER_PAUSE_MS);
+  }
 }
 
 // --- RENDER A SINGLE DRINK INTO THE TIKI BAR ---
@@ -24,7 +67,7 @@ function renderDrink(drink) {
   document.querySelector('h2').innerText = drink.strDrink;
   document.querySelector('#drink-img').src = drink.strDrinkThumb;
 
-// Ingredients + images
+  // Build ingredients + images
   let ingredientsList = '';
   let ingredientImages = '';
 
@@ -32,7 +75,7 @@ function renderDrink(drink) {
     const ing = drink[`strIngredient${i}`];
     const measure = drink[`strMeasure${i}`];
 
-    if (!ing) continue; // skip empty slots
+    if (!ing) continue;
 
     const cleanMeasure = measure ? measure.trim() : '';
 
@@ -45,11 +88,19 @@ function renderDrink(drink) {
     ingredientsList += `<li>${cleanMeasure} ${ing}</li>`;
   }
 
+  // Push content into DOM
   document.querySelector('.ingredient-images').innerHTML = ingredientImages;
   document.querySelector('.ingredients').innerHTML = ingredientsList;
   document.querySelector('.instructions').innerText = drink.strInstructions;
-    // Show the hidden sections once we have a drink
+
+  // Reveal previously hidden sections (first ever drink)
   methodSections.forEach(section => section.classList.remove('hidden'));
+
+  // ✅ CHANGED: REMOVE shutter opening from here
+  // (opening is handled by withClosedShutter so swap never happens mid-close)
+  // setTimeout(() => {
+  //   drinkWindow.classList.add('open');
+  // }, 500);
 }
 
 // --- BUILD A–Z BUTTONS ---
@@ -66,7 +117,6 @@ document.querySelector('#shake-btn').addEventListener('click', getDrink);
 document.querySelector('#surprise-btn').addEventListener('click', getRandomDrink);
 document.querySelector('#ingredient-btn').addEventListener('click', getDrinkByIngredient);
 
-
 searchInput.addEventListener('keydown', e => {
   if (e.key === 'Enter') {
     getDrink();
@@ -80,6 +130,8 @@ ingredientInput.addEventListener('keydown', e => {
 });
 
 function getDrink() {
+  // ✅ CHANGED: close shutter immediately (so it starts dropping now)
+  drinkWindow.classList.remove('open');
 
   letterResultsDropdown.classList.add('hidden');
   letterResultsDropdown.innerHTML = '';
@@ -87,7 +139,6 @@ function getDrink() {
   // Start shaking animation
   shakers.forEach(shaker => shaker.classList.add('shake'));
 
-  // Delay the fetch by 1.5s while shaking happens
   setTimeout(() => {
     const choice = document.querySelector('input').value.trim();
 
@@ -96,7 +147,6 @@ function getDrink() {
       .then(data => {
         const drinks = data.drinks;
         if (!drinks || drinks.length === 0) {
-          // simple "no results" handling
           document.querySelector('h2').innerText = 'No cocktails found';
           document.querySelector('#drink-img').src = '';
           document.querySelector('.ingredient-images').innerHTML = '';
@@ -109,38 +159,44 @@ function getDrink() {
         const drink = drinks[randomIndex];
 
         console.log(drinks);
-        renderDrink(drink);
+
+        // ✅ CHANGED: swap/render only after shutter is fully closed
+        withClosedShutter(() => renderDrink(drink)); // ✅ CHANGED
       })
       .catch(err => console.log(err))
       .finally(() => {
-        // Stop shaking after fetch completes
         shakers.forEach(shaker => shaker.classList.remove('shake'));
       });
 
-  }, 1500); // 1.5 seconds of shaking
+  }, SHAKER_DELAY_MS); // ✅ CHANGED: uses constant
 }
 
 function getRandomDrink() {
-  // Start shaking animation
+  // ✅ CHANGED: close shutter immediately
+  drinkWindow.classList.remove('open');
+
   shakers.forEach(shaker => shaker.classList.add('shake'));
 
   setTimeout(() => {
     fetch('https://www.thecocktaildb.com/api/json/v1/1/random.php')
       .then(res => res.json())
       .then(data => {
-        const drink = data.drinks[0]; // random.php returns a single drink in an array
-        renderDrink(drink);
+        const drink = data.drinks[0];
+
+        // ✅ CHANGED: swap/render only after shutter is fully closed
+        withClosedShutter(() => renderDrink(drink)); // ✅ CHANGED
       })
       .catch(err => console.log(err))
       .finally(() => {
-        // Stop shaking after fetch completes
         shakers.forEach(shaker => shaker.classList.remove('shake'));
       });
-  }, 1500); // match your existing shake duration
+  }, SHAKER_DELAY_MS); // ✅ CHANGED
 }
 
 function getDrinkByIngredient() {
-  // start shaking animation
+  // ✅ CHANGED: close shutter immediately
+  drinkWindow.classList.remove('open');
+
   shakers.forEach(shaker => shaker.classList.add('shake'));
 
   setTimeout(() => {
@@ -151,7 +207,6 @@ function getDrinkByIngredient() {
       return;
     }
 
-    // search by ingredient
     fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${ingredient}`)
       .then(res => res.json())
       .then(async data => {
@@ -166,22 +221,20 @@ function getDrinkByIngredient() {
           return;
         }
 
-        // pick random from ingredient results
         const randomIndex = Math.floor(Math.random() * drinks.length);
-        const selected = drinks[randomIndex]; // has idDrink, name, thumb
+        const selected = drinks[randomIndex];
 
-        // fetch full details
         const fullDrink = await fetchDrinkById(selected.idDrink);
 
-        renderDrink(fullDrink);
+        // ✅ CHANGED: swap/render only after shutter is fully closed
+        withClosedShutter(() => renderDrink(fullDrink)); // ✅ CHANGED
       })
       .catch(err => console.log(err))
       .finally(() => {
-        // stop shaking
         shakers.forEach(shaker => shaker.classList.remove('shake'));
       });
 
-  }, 1500);
+  }, SHAKER_DELAY_MS); // ✅ CHANGED
 }
 
 // --- ALPHABET LIST LOGIC ---
@@ -195,11 +248,9 @@ alphabetContainer.addEventListener('click', e => {
     .then(data => {
       currentLetterDrinks = data.drinks || [];
 
-      // Clear and show dropdown
       letterResultsDropdown.innerHTML = '<option>Select a cocktail...</option>';
       letterResultsDropdown.classList.remove('hidden');
 
-      // Populate dropdown
       currentLetterDrinks.forEach(drink => {
         const option = document.createElement('option');
         option.value = drink.idDrink;
@@ -213,11 +264,12 @@ alphabetContainer.addEventListener('click', e => {
 // When you click a cocktail name from the letter list
 letterResultsDropdown.addEventListener('change', e => {
   const id = e.target.value;
-
   const drink = currentLetterDrinks.find(d => d.idDrink === id);
 
   if (drink) {
-    renderDrink(drink);
+    // ✅ CHANGED: close shutter immediately, then swap after fully closed
+    drinkWindow.classList.remove('open');
+    withClosedShutter(() => renderDrink(drink)); // ✅ CHANGED
   }
 });
 

@@ -64,12 +64,19 @@
 			
 			<button id="surprise-btn" type="button">Surprise me</button>
 		</div>
-		
-		<div class="tiki-container">
-    		<img id="drink-img" class="drink" src="" alt="">
-    		<!-- <img class="tiki-frame" src="assets/TikiBar-1200px-02.png" alt=""> -->
 
-		<section class="cocktailMethod hidden">
+		<div class="tiki-container">
+			<!-- Window area (this aligns with the transparent hole) -->
+			<div class="drink-window">
+				<div class="tiki-shutter"></div>
+				<img id="drink-img" class="drink" src="" alt="">
+			</div>
+
+			<!-- Static tiki bar frame -->
+			<img class="tiki-frame" src="assets/TikiBar-1200px-02.png" alt="">
+		</div>
+
+		<section class="cocktailMethod">
 			<div class="h2Holder">
 				<h2></h2>
 			</div>
@@ -80,7 +87,7 @@
 
 		</div>
 
-		<section id="instructionSection" class="cocktailMethod hidden">
+		<section id="instructionSection" class="cocktailMethod">
 			<h3>Instructions</h3>
 			<div class="instructions"></div>
 		</section>
