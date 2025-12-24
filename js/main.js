@@ -267,7 +267,7 @@ function resetApp() {
 
   // Clear title and image
   document.querySelector('h2').innerText = '';
-  document.querySelector('#drink-img').src = '';
+  // document.querySelector('#drink-img').src = '';
 
   // Clear ingredients and instructions
   document.querySelector('.ingredient-images').innerHTML = '';
