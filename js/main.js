@@ -14,6 +14,8 @@ const methodSections = document.querySelectorAll('.cocktailMethod');
 const drinkWindow = document.querySelector('.drink-window');
 const tikiShutter = document.querySelector('.tiki-shutter'); 
 
+document.querySelector('h1').addEventListener('click', resetApp);
+
 // timing values in one place
 const SHUTTER_PAUSE_MS = 500;  // time to stay closed before opening
 const SHAKER_DELAY_MS = 1500;  // your existing shake delay
@@ -257,6 +259,35 @@ letterResultsDropdown.addEventListener('change', e => {
     withClosedShutter(() => renderDrink(drink));
   }
 });
+
+function resetApp() {
+
+  // Close shutter
+  drinkWindow.classList.remove('open');
+
+  // Clear title and image
+  document.querySelector('h2').innerText = '';
+  document.querySelector('#drink-img').src = '';
+
+  // Clear ingredients and instructions
+  document.querySelector('.ingredient-images').innerHTML = '';
+  document.querySelector('.ingredients').innerHTML = '';
+  document.querySelector('.instructions').innerText = '';
+
+  // Hide recipe sections
+  // methodSections.forEach(section => section.classList.add('hidden'));
+
+  // Clear inputs
+  searchInput.value = '';
+  ingredientInput.value = '';
+
+  // Hide alphabet dropdown
+  letterResultsDropdown.classList.add('hidden');
+  letterResultsDropdown.innerHTML = '';
+
+  // Stop shaker animation if running
+  shakers.forEach(shaker => shaker.classList.remove('shake'));
+}
 
 // Other ideas
 // ✨ Add measurements paired with ingredients (done)
