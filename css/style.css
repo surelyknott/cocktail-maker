@@ -19,32 +19,26 @@ background-image: url("data:image/svg+xml,%3Csvg width='80' height='88' viewBox=
 }
 
 main{
-  background-color: #ffdcdc;
-  border-radius: 30px;
   display: flex;
-  width: 90%;
   flex-direction: column;
   align-items: center;
+  width: 90%;
   margin: 30px 0 50px 0;
+  background-color: #ffdcdc;
+  border-radius: 30px;
 }
 
 img{
   display: block;
-  /* height: 300px; */
-  /* margin: 0 auto; */
 }
-
-/* h3{
-  max-width: 80%;
-} */
 
 .cocktailMethod {
     display: flex;
     border-radius: 40px;
     flex-direction: column;
+    align-items: center;
     max-width: 80%;
     padding: 0 20px;
-    align-items: center;
 }
 
 #instructionSection {
@@ -74,25 +68,25 @@ main{
 
 h1{
   font-size: 5rem;
-  color: #933e3e;
   font-family: "Sirivennela", sans-serif;
   font-weight: 400;
   font-style: normal;
+  color: #933e3e;
   margin: 20px;
 }
 
 h2 {
-    color: #5e0a6a;
     font-family: "Sirivennela", sans-serif;
+    color: #5e0a6a;
     margin-bottom: 0;
     text-align: center;
 }
 
 h3 {
     margin-top: 10px;
-    color: #681274;
     font-family: 'Century';
     font-size: 1.5rem;
+    color: #681274;
 }
 
 .h2Holder {
@@ -154,7 +148,6 @@ h3 {
     position: relative;
 }
 
-/* This MUST line up with the transparent hole */
 .drink-window {
     display: flex;
     position: absolute;
@@ -186,7 +179,6 @@ h3 {
 
 .drink {
     width: 66%;
-    /* height: 100%; */
     object-fit: contain;
     z-index: 1;
 }
@@ -255,15 +247,12 @@ button {
   justify-content: center;
   gap: 13px;
   padding: 0 20px;
-  /* margin-bottom: 0px; */
 }
 
 .alphabet button {
     color: #933e3e;
     font-family: "Tahoma";
     border: 1px solid #ccc;
-    background: #e3cae3ba;
-    /* padding: 4px 8px; */
     font-size: 1.0rem;
 }
 

@@ -1,4 +1,4 @@
-//The user will enter a cocktail. Get a cocktail name, photo, and instructions and place them in the DOM
+// HOMEWORK: The user will enter a cocktail. Get a cocktail name, photo, and instructions and place them in the DOM
 
 // --- GLOBAL ELEMENTS & STATE ---
 const alphabetContainer = document.querySelector('.alphabet');
@@ -12,11 +12,9 @@ const surpriseBtn = document.querySelector('#surprise-btn');
 const ingredientBtn = document.querySelector('#ingredient-btn');
 const methodSections = document.querySelectorAll('.cocktailMethod');
 const drinkWindow = document.querySelector('.drink-window');
+const tikiShutter = document.querySelector('.tiki-shutter'); 
 
-// ✅ CHANGED: grab shutter element once (needed for transitionend)
-const tikiShutter = document.querySelector('.tiki-shutter'); // ✅ CHANGED
-
-// ✅ CHANGED: timing values in one place
+// timing values in one place
 const SHUTTER_PAUSE_MS = 500;  // time to stay closed before opening
 const SHAKER_DELAY_MS = 1500;  // your existing shake delay
 
@@ -95,12 +93,6 @@ function renderDrink(drink) {
 
   // Reveal previously hidden sections (first ever drink)
   methodSections.forEach(section => section.classList.remove('hidden'));
-
-  // ✅ CHANGED: REMOVE shutter opening from here
-  // (opening is handled by withClosedShutter so swap never happens mid-close)
-  // setTimeout(() => {
-  //   drinkWindow.classList.add('open');
-  // }, 500);
 }
 
 // --- BUILD A–Z BUTTONS ---
@@ -130,7 +122,6 @@ ingredientInput.addEventListener('keydown', e => {
 });
 
 function getDrink() {
-  // ✅ CHANGED: close shutter immediately (so it starts dropping now)
   drinkWindow.classList.remove('open');
 
   letterResultsDropdown.classList.add('hidden');
@@ -160,19 +151,17 @@ function getDrink() {
 
         console.log(drinks);
 
-        // ✅ CHANGED: swap/render only after shutter is fully closed
-        withClosedShutter(() => renderDrink(drink)); // ✅ CHANGED
+        withClosedShutter(() => renderDrink(drink)); 
       })
       .catch(err => console.log(err))
       .finally(() => {
         shakers.forEach(shaker => shaker.classList.remove('shake'));
       });
 
-  }, SHAKER_DELAY_MS); // ✅ CHANGED: uses constant
+  }, SHAKER_DELAY_MS); 
 }
 
 function getRandomDrink() {
-  // ✅ CHANGED: close shutter immediately
   drinkWindow.classList.remove('open');
 
   shakers.forEach(shaker => shaker.classList.add('shake'));
@@ -183,18 +172,16 @@ function getRandomDrink() {
       .then(data => {
         const drink = data.drinks[0];
 
-        // ✅ CHANGED: swap/render only after shutter is fully closed
-        withClosedShutter(() => renderDrink(drink)); // ✅ CHANGED
+        withClosedShutter(() => renderDrink(drink)); 
       })
       .catch(err => console.log(err))
       .finally(() => {
         shakers.forEach(shaker => shaker.classList.remove('shake'));
       });
-  }, SHAKER_DELAY_MS); // ✅ CHANGED
+  }, SHAKER_DELAY_MS);
 }
 
 function getDrinkByIngredient() {
-  // ✅ CHANGED: close shutter immediately
   drinkWindow.classList.remove('open');
 
   shakers.forEach(shaker => shaker.classList.add('shake'));
@@ -226,15 +213,14 @@ function getDrinkByIngredient() {
 
         const fullDrink = await fetchDrinkById(selected.idDrink);
 
-        // ✅ CHANGED: swap/render only after shutter is fully closed
-        withClosedShutter(() => renderDrink(fullDrink)); // ✅ CHANGED
+        withClosedShutter(() => renderDrink(fullDrink)); 
       })
       .catch(err => console.log(err))
       .finally(() => {
         shakers.forEach(shaker => shaker.classList.remove('shake'));
       });
 
-  }, SHAKER_DELAY_MS); // ✅ CHANGED
+  }, SHAKER_DELAY_MS); 
 }
 
 // --- ALPHABET LIST LOGIC ---
@@ -267,17 +253,12 @@ letterResultsDropdown.addEventListener('change', e => {
   const drink = currentLetterDrinks.find(d => d.idDrink === id);
 
   if (drink) {
-    // ✅ CHANGED: close shutter immediately, then swap after fully closed
     drinkWindow.classList.remove('open');
-    withClosedShutter(() => renderDrink(drink)); // ✅ CHANGED
+    withClosedShutter(() => renderDrink(drink));
   }
 });
 
-// Homework tasks
-// Make the cocktailDB API work with spaces between the names (i.e Dark and Stormy)
-// Find three APIs and build three simple apps using those APIs (github public API list)
-
-// Other vibe-coding ideas
+// Other ideas
 // ✨ Add measurements paired with ingredients (done)
 // ✨ Add a “Shake another!” button
 // ✨ Add a preloader animation (shaker gif?)
